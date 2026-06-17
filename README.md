@@ -1,58 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Job Portal Magang
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Repository proyek Job Portal Magang. Dibangun dengan framework Laravel 11.  
+Panduan di bawah ini menjelaskan langkah-langkah untuk menjalankan proyek di lingkungan pengembangan lokal.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Cara Menjalankan Proyek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Ikuti langkah-langkah di bawah ini secara berurutan:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Mengambil Kode dari GitHub
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Gunakan perintah berikut untuk melakukan clone repository:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/mrmiftach-blip/AFL3-ALP-KEL-B
+cd magang-portal
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+(Jika repository sudah pernah di-clone sebelumnya, jalankan perintah `git pull` untuk memperbarui kode lokal).
 
-## Contributing
+### 2. Install Dependencies
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka terminal di dalam direktori `magang-portal`, kemudian jalankan:
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Konfigurasi Environment (.env)
 
-## Security Vulnerabilities
+1. Salin file `.env.example` menjadi `.env`.
+    ```bash
+    cp .env.example .env
+    ```
+2. Buka file `.env` menggunakan teks editor.
+3. Sesuaikan konfigurasi database untuk menggunakan MySQL:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=magang_portal
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Generate Application Key
 
-## License
+Jalankan perintah berikut untuk menghasilkan kunci enkripsi aplikasi:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### 5. Setup Database MySQL
+
+**Pengguna XAMPP / Laragon:**
+
+1. Pastikan servis MySQL berjalan.
+2. Buat database baru dengan nama: **`magang_portal`** melalui phpMyAdmin.
+
+**Pengguna Laravel Herd:**
+
+1. Pastikan servis MySQL berjalan.
+2. Buat database baru dengan nama: **`magang_portal`** menggunakan database client (seperti DBeaver, dll).
+
+### 6. Menjalankan Migrasi dan Seeder
+
+Untuk membuat struktur tabel dan mengisi data awal (seeder), jalankan perintah berikut:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 7. Menjalankan Server Lokal
+
+**Pengguna XAMPP / Laragon:**
+Jalankan development server Laravel dengan perintah:
+
+```bash
+php artisan serve
+```
+
+Aplikasi dapat diakses melalui browser di alamat: **http://127.0.0.1:8000**
+
+**Pengguna Laravel Herd:**
+Tidak perlu menjalankan perintah `serve`. Aplikasi sudah otomatis berjalan dan dapat diakses melalui alamat: **http://magang-portal.test** (atau sesuai nama folder repository).
+
+---
+
+## Data Akun Uji Coba (Seeder)
+
+Proses seeder telah menyisipkan 3 akun default ke dalam database untuk keperluan pengujian.
+
+| Role           | Email               | Password    |
+| :------------- | :------------------ | :---------- |
+| **Admin**      | `admin@mail.com`    | `qwerty123` |
+| **Perusahaan** | `company1@mail.com` | `qwerty123` |
+| **Mahasiswa**  | `student1@mail.com` | `qwerty123` |
+
+---
+
+## Pembagian Direktori Kerja
+
+-   **Views (UI):** Terdapat di direktori `resources/views/`. Gunakan Bootstrap 5 untuk pengembangan UI.
+-   **Controllers (Logic):** Terdapat di direktori `app/Http/Controllers/`.
+-   **Routes (URL):** Terdapat di file `routes/web.php`. Cek file ini untuk melihat daftar URL yang telah disesuaikan.
