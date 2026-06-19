@@ -58,6 +58,10 @@ Route::middleware(['auth', 'role:' . UserRoleEnum::Student->value])->prefix('stu
 
 
 // JANGAN DIHAPUS DULU SEBELUM AUTH SELESAI, buat test
+Route::get('/masuk-admin', function () {
+    Auth::login(\App\Models\User::where('email', 'admin@mail.com')->first());
+    return "Berhasil Login sebagai Admin!";
+});
 Route::get('/masuk-student', function () {
     Auth::login(\App\Models\User::where('email', 'student1@mail.com')->first());
     return "Berhasil Login sebagai Student1!";
