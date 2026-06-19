@@ -58,19 +58,19 @@ Route::middleware(['auth', 'role:' . UserRoleEnum::Student->value])->prefix('stu
 
 
 // JANGAN DIHAPUS DULU SEBELUM AUTH SELESAI, buat test
-Route::get('/masuk-admin', function () {
+Route::get('/login-admin', function () {
     Auth::login(\App\Models\User::where('email', 'admin@mail.com')->first());
     return "Berhasil Login sebagai Admin!";
 });
-Route::get('/masuk-student', function () {
+Route::get('/login-student', function () {
     Auth::login(\App\Models\User::where('email', 'student1@mail.com')->first());
     return "Berhasil Login sebagai Student1!";
 });
-Route::get('/masuk-perusahaan', function () {
+Route::get('/login-perusahaan', function () {
     Auth::login(\App\Models\User::where('email', 'company1@mail.com')->first());
     return "Berhasil Login sebagai Perusahaan (PT Company Satu)!";
 });
-Route::get('/keluar', function () {
+Route::get('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
