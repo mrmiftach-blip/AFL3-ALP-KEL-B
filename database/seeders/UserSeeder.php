@@ -35,16 +35,11 @@ class UserSeeder extends Seeder
             'role' => UserRoleEnum::Company->value,
         ]);
 
-        CompanyProfile::create([
+        $companyProfile = CompanyProfile::create([
             'user_id' => $company->id,
             'company_name' => 'PT Company Satu',
             'description' => 'Perusahaan IT terkemuka.',
             'address' => 'Jl. Teknologi No. 1',
-        ]);
-
-        // Program Studi
-        $studyProgram = StudyProgram::create([
-            'name' => 'Teknik Informatika',
         ]);
 
         // Mahasiswa
@@ -55,7 +50,9 @@ class UserSeeder extends Seeder
             'role' => UserRoleEnum::Student->value,
         ]);
 
-        StudentProfile::create([
+        $studyProgram = StudyProgram::firstOrCreate(['name' => 'Teknik Informatika']);
+
+        $studentProfile = StudentProfile::create([
             'user_id' => $student->id,
             'study_program_id' => $studyProgram->id,
             'nim' => '070601231001',
