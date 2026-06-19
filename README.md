@@ -44,6 +44,18 @@ composer install
     DB_USERNAME=root
     DB_PASSWORD=
     ```
+4. Sesuaikan konfigurasi Mailtrap untuk pengetesan fitur kirim Email (Notifikasi):
+    ```env
+    MAIL_MAILER=smtp
+    MAIL_SCHEME=null
+    MAIL_HOST=sandbox.smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=tanya_diardo
+    MAIL_PASSWORD=tanya_diardo
+    MAIL_ENCRYPTION=tls
+    MAIL_FROM_ADDRESS="no-reply@magang-portal.test"
+    MAIL_FROM_NAME="Portal Magang"
+    ```
 
 ### 4. Generate Application Key
 
@@ -87,6 +99,14 @@ Aplikasi dapat diakses melalui browser di alamat: **http://127.0.0.1:8000**
 **Pengguna Laravel Herd:**
 Tidak perlu menjalankan perintah `serve`. Aplikasi sudah otomatis berjalan dan dapat diakses melalui alamat: **http://magang-portal.test** (atau sesuai nama folder repository).
 
+### 8. Menjalankan Queue Worker (Untuk Notifikasi)
+
+Sistem menggunakan *Queue* secara asinkron untuk mengirim email dan In-App Notification. Agar email bisa dikirim, buka terminal baru (jangan tutup server yang sedang jalan) lalu biarkan perintah ini terus menyala:
+
+```bash
+php artisan queue:work
+```
+
 ---
 
 ## Data Akun Uji Coba (Seeder)
@@ -98,6 +118,13 @@ Proses seeder telah menyisipkan 3 akun default ke dalam database untuk keperluan
 | **Admin**      | `admin@mail.com`    | `qwerty123` |
 | **Perusahaan** | `company1@mail.com` | `qwerty123` |
 | **Mahasiswa**  | `student1@mail.com` | `qwerty123` |
+
+> [!TIP]
+> **Rute Bypass untuk Development:**
+> Jika UI Login belum selesai, Anda bisa menggunakan rute sakti ini untuk langsung mencoba *role* tertentu:
+> - Akses `/masuk-student` untuk login otomatis sebagai Mahasiswa.
+> - Akses `/masuk-perusahaan` untuk login otomatis sebagai Perusahaan.
+> - Akses `/keluar` untuk membuang sesi login (menjadi *Guest* kembali).
 
 ---
 
