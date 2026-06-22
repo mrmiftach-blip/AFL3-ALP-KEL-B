@@ -13,11 +13,19 @@ return new class extends Migration
     {
         Schema::create('job_postings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_profile_id')->constrained()->onDelete('cascade');
-            $table->foreignId('study_program_id')->constrained()->onDelete('cascade');
+
+            $table->foreignId('company_profile_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
+            $table->foreignId('study_program_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
             $table->string('title');
             $table->text('description');
-            $table->dateTime('deadline_date');
+            $table->dateTime('deadline_at');
+        
             $table->timestamps();
         });
     }
