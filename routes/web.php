@@ -28,6 +28,10 @@ Route::controller(\App\Http\Controllers\JobController::class)->group(function ()
 Route::middleware(['auth'])->group(function () {
     // Rute untuk mengunduh CV secara aman (memeriksa otorisasi di dalam controller)
     Route::get('/download-cv/{id}', [\App\Http\Controllers\StudentController::class, 'downloadCv'])->name('student.download-cv');
+
+    // Rute Notifikasi In-App
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'list'])->name('notification.list');
+    Route::get('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'read'])->name('notification.read');
 });
 
 // Rute Panel Admin (Tugas Bagian 5 Panel Admin )

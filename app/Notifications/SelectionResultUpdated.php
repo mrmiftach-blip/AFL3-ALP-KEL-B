@@ -23,18 +23,44 @@ class SelectionResultUpdated extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('Update Status Lamaran: ' . $this->application->jobPosting->title)
-            ->greeting('Halo ' . $notifiable->name)
-            ->line('Status lamaran Anda untuk posisi ' . $this->application->jobPosting->title . ' telah diupdate.')
-            ->line('Status saat ini: ' . $this->application->status->value)
-            ->action('Cek Status Lamaran', route('student.application'));
+        $status = $this->application->status->value;
+        $posisi = $this->application->jobPosting->title;
+        $perusahaan = $this->application->jobPosting->companyProfile->user->name;
+
+        $mail = (new MailMessage)
+            ->subject('Update Status Lamaran: ' . $posisi)
+            ->greeting('Halo ' . $notifiable->name);
+
+        if ($status === 'Accepted') {
+            $mail->line('Selamat! Anda telah DITERIMA untuk posisi ' . $posisi . ' di ' . $perusahaan . '.');
+            $mail->line('Silakan tunggu informasi selanjutnya dari pihak perusahaan atau cek portal secara berkala.');
+        } elseif ($status === 'Rejected') {
+            $mail->line('Mohon maaf, lamaran Anda untuk posisi ' . $posisi . ' di ' . $perusahaan . ' DITOLAK.');
+            $mail->line('Jangan patah semangat dan terus mencoba lowongan lainnya!');
+        } else {
+            // Fallback ke status lain
+            $mail->line('Status lamaran Anda untuk posisi ' . $posisi . ' di ' . $perusahaan . ' telah diupdate menjadi: ' . $status);
+        }
+
+        return $mail->action('Cek Status Lamaran', route('student.application'));
     }
 
     public function toArray(object $notifiable): array
     {
+        $status = $this->application->status->value;
+        $posisi = $this->application->jobPosting->title;
+        $perusahaan = $this->application->jobPosting->companyProfile->user->name;
+
+        if ($status === 'Accepted') {
+            $text = 'Selamat! Anda diterima untuk posisi ' . $posisi . ' di ' . $perusahaan;
+        } elseif ($status === 'Rejected') {
+            $text = 'Mohon maaf, Anda ditolak untuk posisi ' . $posisi . ' di ' . $perusahaan;
+        } else {
+            $text = 'Status lamaran ' . $posisi . ' di ' . $perusahaan . ' menjadi ' . $status;
+        }
+
         return [
-            'text' => 'Status lamaran Anda untuk ' . $this->application->jobPosting->title . ' telah menjadi ' . $this->application->status->value,
+            'text' => $text,
             'route' => 'student.application',
             'routeParam' => []
         ];

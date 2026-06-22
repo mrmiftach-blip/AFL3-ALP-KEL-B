@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Models\JobPosting;
 use App\Models\StudyProgram;
+use App\Models\Application;
+use App\Enums\ApplicationStatusEnum;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ApplicantApplied;
 
 class JobController extends Controller
 {
@@ -62,8 +66,39 @@ class JobController extends Controller
             if ($isClosed) {
                 return back()->withErrors(['alert' => 'Lowongan ini sudah ditutup.']);
             }
+
             // TODO: Implementasikan logika 1-Click Apply
-            return redirect()->back();
+            // maaf, ini aku kerjakan sebagian buat ngetest notification ya.
+
+            // Pengecekan profil mahasiswa
+            $studentProfile = $request->user()->studentProfile;
+            if (!$studentProfile) {
+                return back()->withErrors(['alert' => 'Anda harus melengkapi profil dan mengunggah CV terlebih dahulu.']);
+            }
+
+            // Pengecekan apakah sudah pernah melamar (Double Apply)
+            $existingApplication = Application::where('job_posting_id', $job->id)
+                ->where('student_profile_id', $studentProfile->id)
+                ->first();
+
+            if ($existingApplication) {
+                return back()->withErrors(['alert' => 'Anda sudah melamar posisi ini.']);
+            }
+
+            // Buat lamaran baru
+            $application = Application::create([
+                'job_posting_id' => $job->id,
+                'student_profile_id' => $studentProfile->id,
+                'status' => ApplicationStatusEnum::Submitted->value,
+            ]);
+
+            // Trigger Notifikasi
+            $companyUser = $job->companyProfile->user;
+            if ($companyUser) {
+                Notification::send($companyUser, new ApplicantApplied($application));
+            }
+
+            return redirect()->back()->with('success', 'Berhasil melamar pekerjaan ini!');
         }
 
         // jangan hapus, untuk development
