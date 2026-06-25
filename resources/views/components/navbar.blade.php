@@ -7,15 +7,6 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                @auth
-                    @if(auth()->user()->role->value === 'company')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('company.dashboard') }}">Dashboard Perusahaan</a>
-                        </li>
-                    @endif
-                @endauth
-            </ul>
             <ul class="navbar-nav ms-auto align-items-center">
                 @auth
                     <li class="nav-item me-2">
