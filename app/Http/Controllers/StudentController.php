@@ -25,8 +25,18 @@ class StudentController extends Controller
         if ($request->isMethod('post')) {
             // Validasi input file cv agar hanya menerima PDF dengan ukuran maksimal 2MB
             $request->validate([
+                'name' => 'required|string|max:255',
+                'nim' => 'required|string|max:20',
+                'study_program_id' => 'required|exists:study_programs,id',
                 'cv' => ['nullable', File::types(['pdf'])->max('2mb')]
             ]);
+
+            // Update nama user (karena nama tersimpan di tabel users)
+            $request->user()->update([
+                'name' => $request->name
+            ]);
+
+            $path = $profile->cv_path ?? null;
 
             // Jika user mengunggah file CV baru
             if ($request->hasFile('cv')) {
@@ -37,23 +47,25 @@ class StudentController extends Controller
 
                 // Simpan file baru ke folder 'resumes' di dalam disk 'local' (tidak bisa diakses publik)
                 $path = $request->file('cv')->store('resumes', 'local');
-
-                // Jika user belum punya profil sama sekali, buat data profil baru dengan nilai default
-                if (!$profile) {
-                    $profile = StudentProfile::create([
-                        'user_id' => $request->user()->id,
-                        'nim' => $request->nim ?? 'TBD',
-                        'study_program_id' => $request->study_program_id ?? 1,
-                        'cv_path' => $path
-                    ]);
-                } else {
-                    // Jika profil sudah ada, cukup perbarui kolom cv_path saja
-                    $profile->cv_path = $path;
-                    $profile->save();
-                }
             }
 
-            // Kembalikan ke halaman sebelumnya dengan membawa pesan sukses
+            // Jika user belum punya profil sama sekali, buat data profil baru dengan nilai default
+            if (!$profile) {
+                StudentProfile::create([
+                    'user_id' => $request->user()->id,
+                    'nim' => $request->nim,
+                    'study_program_id' => $request->study_program_id,
+                    'cv_path' => $path
+                ]);
+            } else {
+                // Update profil yang sudah ada
+                $profile->update([
+                    'nim' => $request->nim,
+                    'study_program_id' => $request->study_program_id,
+                    'cv_path' => $path
+                ]);
+            }
+
             return redirect()->back()->withSuccess('Profil dan CV berhasil diperbarui.');
         }
 

@@ -44,9 +44,11 @@ Route::middleware(['auth', 'role:' . UserRoleEnum::Admin->value])->prefix('admin
 
 // Rute Panel Perusahaan (Tugas Bagian 2: Panel Perusahaan)
 Route::middleware(['auth', 'role:' . UserRoleEnum::Company->value])->prefix('company')->name('company.')->controller(\App\Http\Controllers\CompanyController::class)->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('company.dashboard');
+    });
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::match(['get', 'post'], '/profile', 'profile')->name('profile');
-    Route::get('/jobs', 'jobs')->name('job.list');
     Route::match(['get', 'post'], '/jobs/create', 'jobForm')->name('job.create');
     Route::match(['get', 'post'], '/jobs/{id}/edit', 'jobForm')->name('job.edit');
     Route::match(['get', 'post'], '/jobs/{id}/applicants', 'applicants')->name('applicant');
@@ -64,15 +66,18 @@ Route::middleware(['auth', 'role:' . UserRoleEnum::Student->value])->prefix('stu
 // JANGAN DIHAPUS DULU SEBELUM AUTH SELESAI, buat test
 Route::get('/masuk-admin', function () {
     Auth::login(\App\Models\User::where('email', 'admin@mail.com')->first());
-    return "Berhasil Login sebagai Admin!";
+    return "<h3 style='font-family: sans-serif;'>Berhasil Login sebagai Admin!</h3>
+            <a href='/admin/dashboard'><button style='padding: 10px 20px; cursor: pointer; font-size: 16px;'>Lanjut ke Panel Admin</button></a>";
 });
 Route::get('/masuk-student', function () {
     Auth::login(\App\Models\User::where('email', 'student1@mail.com')->first());
-    return "Berhasil Login sebagai Student1!";
+    return "<h3 style='font-family: sans-serif;'>Berhasil Login sebagai Student1!</h3>
+            <a href='/jobs'><button style='padding: 10px 20px; cursor: pointer; font-size: 16px;'>Lanjut ke Daftar Lowongan (/jobs)</button></a>";
 });
 Route::get('/masuk-perusahaan', function () {
     Auth::login(\App\Models\User::where('email', 'company1@mail.com')->first());
-    return "Berhasil Login sebagai Perusahaan (PT Company Satu)!";
+    return "<h3 style='font-family: sans-serif;'>Berhasil Login sebagai Perusahaan (PT Company Satu)!</h3>
+            <a href='/company/dashboard'><button style='padding: 10px 20px; cursor: pointer; font-size: 16px;'>Lanjut ke Panel Perusahaan</button></a>";
 });
 Route::get('/keluar', function () {
     Auth::logout();

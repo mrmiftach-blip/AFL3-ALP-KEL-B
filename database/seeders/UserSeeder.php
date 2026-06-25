@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
 
         // Mahasiswa
         $student = User::create([
-            'name' => 'student1',
+            'name' => 'student satu',
             'email' => 'student1@mail.com',
             'password' => $password,
             'role' => UserRoleEnum::Student->value,

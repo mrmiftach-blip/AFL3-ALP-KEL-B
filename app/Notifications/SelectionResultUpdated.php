@@ -25,7 +25,7 @@ class SelectionResultUpdated extends Notification implements ShouldQueue
     {
         $status = $this->application->status->value;
         $posisi = $this->application->jobPosting->title;
-        $perusahaan = $this->application->jobPosting->companyProfile->user->name;
+        $perusahaan = $this->application->jobPosting->companyProfile->company_name ?? 'Perusahaan';
 
         $mail = (new MailMessage)
             ->subject('Update Status Lamaran: ' . $posisi)
@@ -37,6 +37,9 @@ class SelectionResultUpdated extends Notification implements ShouldQueue
         } elseif ($status === 'Rejected') {
             $mail->line('Mohon maaf, lamaran Anda untuk posisi ' . $posisi . ' di ' . $perusahaan . ' DITOLAK.');
             $mail->line('Jangan patah semangat dan terus mencoba lowongan lainnya!');
+        } elseif ($status === 'Reviewed') {
+            $mail->line('Kabar baik! Lamaran Anda untuk posisi ' . $posisi . ' di ' . $perusahaan . ' saat ini sedang DI-REVIEW oleh perusahaan.');
+            $mail->line('Perusahaan sedang mempertimbangkan profil dan CV Anda.');
         } else {
             // Fallback ke status lain
             $mail->line('Status lamaran Anda untuk posisi ' . $posisi . ' di ' . $perusahaan . ' telah diupdate menjadi: ' . $status);
@@ -49,12 +52,14 @@ class SelectionResultUpdated extends Notification implements ShouldQueue
     {
         $status = $this->application->status->value;
         $posisi = $this->application->jobPosting->title;
-        $perusahaan = $this->application->jobPosting->companyProfile->user->name;
+        $perusahaan = $this->application->jobPosting->companyProfile->company_name ?? 'Perusahaan';
 
         if ($status === 'Accepted') {
             $text = 'Selamat! Anda diterima untuk posisi ' . $posisi . ' di ' . $perusahaan;
         } elseif ($status === 'Rejected') {
             $text = 'Mohon maaf, Anda ditolak untuk posisi ' . $posisi . ' di ' . $perusahaan;
+        } elseif ($status === 'Reviewed') {
+            $text = 'Lamaran Anda sedang di-review untuk posisi ' . $posisi . ' di ' . $perusahaan;
         } else {
             $text = 'Status lamaran ' . $posisi . ' di ' . $perusahaan . ' menjadi ' . $status;
         }
