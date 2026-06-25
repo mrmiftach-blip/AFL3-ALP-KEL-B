@@ -15,28 +15,28 @@ class JobPostingSeeder extends Seeder
         $ti = StudyProgram::where('name', 'Teknik Informatika')->first();
         $si = StudyProgram::where('name', 'Sistem Informasi')->first();
 
-        JobPosting::create([
+        $job1 = JobPosting::create([
             'company_profile_id' => $companyProfile->id,
-            'study_program_id' => $ti->id,
             'title' => 'Software Engineer / Programmer Intern',
             'description' => 'Membangun aplikasi web yang menakjubkan menggunakan framework Laravel dan React.',
             'deadline_date' => now()->addDays(30),
         ]);
+        $job1->studyPrograms()->attach($ti->id);
 
-        JobPosting::create([
+        $job2 = JobPosting::create([
             'company_profile_id' => $companyProfile->id,
-            'study_program_id' => $si->id,
             'title' => 'System Analyst Intern',
             'description' => 'Menganalisis sistem informasi dan membuat dokumen spesifikasi kebutuhan.',
             'deadline_date' => now()->subDays(2), // tes lowongan yang sudah tutup (Auto-Close)
         ]);
+        $job2->studyPrograms()->attach($si->id);
 
-        JobPosting::create([
+        $job3 = JobPosting::create([
             'company_profile_id' => $companyProfile->id,
-            'study_program_id' => $ti->id,
             'title' => 'Data Scientist Intern',
             'description' => 'Mengolah data menggunakan Python dan Machine Learning.',
             'deadline_date' => now()->addDays(15),
         ]);
+        $job3->studyPrograms()->attach([$ti->id, $si->id]); // contoh 1 lowongan 2 prodi
     }
 }

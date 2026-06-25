@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['company_profile_id', 'study_program_id', 'title', 'description', 'deadline_date'])]
+#[Fillable(['company_profile_id', 'title', 'description', 'deadline_date'])]
 class JobPosting extends Model
 {
     protected function casts(): array
@@ -21,9 +21,9 @@ class JobPosting extends Model
         return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function studyProgram()
+    public function studyPrograms()
     {
-        return $this->belongsTo(StudyProgram::class);
+        return $this->belongsToMany(StudyProgram::class);
     }
 
     public function applications()
