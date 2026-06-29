@@ -60,6 +60,15 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                            @elseif(auth()->user()->role->value === 'admin')
+                                <li>
+                                    <a class="dropdown-item py-2" href="{{ route('admin.dashboard') }}">
+                                        Panel Admin
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                             @endif
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">

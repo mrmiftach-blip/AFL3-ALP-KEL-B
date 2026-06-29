@@ -37,9 +37,19 @@ Route::middleware(['auth'])->group(function () {
 // Rute Panel Admin (Tugas Bagian 5 Panel Admin )
 Route::middleware(['auth', 'role:' . UserRoleEnum::Admin->value])->prefix('admin')->name('admin.')->controller(\App\Http\Controllers\AdminController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
-    Route::match(['get', 'post'], '/study-programs', 'studyPrograms')->name('study-program');
-    Route::match(['get', 'post'], '/companies', 'companies')->name('company');
-    Route::match(['get', 'post'], '/jobs', 'jobs')->name('job');
+
+    // Master Data: Program Studi (CRUD)
+    Route::get('/study-programs', 'studyPrograms')->name('study-program');
+    Route::post('/study-programs', 'storeStudyProgram')->name('study-program.store');
+    Route::put('/study-programs/{studyProgram}', 'updateStudyProgram')->name('study-program.update');
+    Route::delete('/study-programs/{studyProgram}', 'destroyStudyProgram')->name('study-program.destroy');
+
+    // Moderasi: Daftar Lowongan
+    Route::get('/jobs', 'jobs')->name('job');
+    Route::delete('/jobs/{jobPosting}', 'destroyJob')->name('job.destroy');
+
+    // Placeholder bawaan
+    Route::get('/companies', 'companies')->name('company');
 });
 
 // Rute Panel Perusahaan (Tugas Bagian 2: Panel Perusahaan)
