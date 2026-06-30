@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(auth()->check() && in_array(auth()->user()->role->value, ['company', 'admin']) ? 'layouts.dashboard' : 'layouts.app')
 
 @section('content')
     <div class="container py-4" style="max-width: 800px;">

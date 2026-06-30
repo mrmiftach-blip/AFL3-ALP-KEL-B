@@ -1,12 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
+@section('title', 'Profil Perusahaan')
 @section('content')
     <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="d-flex align-items-center mb-4">
-                    <a href="{{ route('company.dashboard') }}" class="text-dark text-decoration-none me-3 hover-opacity">
-                        <i class="bi bi-arrow-left" style="font-size: 1.8rem; cursor: pointer;"></i>
-                    </a>
                     <h2 class="mb-0 fw-bold">Kelola Profil Perusahaan</h2>
                 </div>
 
