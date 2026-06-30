@@ -28,42 +28,14 @@
                     <li class="nav-item ms-2 dropdown">
                         <a class="nav-link dropdown-toggle fw-medium text-primary" href="#" role="button"
                             data-bs-toggle="dropdown">
-                            @if(auth()->user()->role->value === 'company')
-                                <i class="bi bi-building fs-5 me-1 text-primary"></i>
-                                {{ auth()->user()->companyProfile->company_name ?? auth()->user()->name }}
-                            @else
-                                <i class="bi bi-person-circle fs-5 me-1 text-primary"></i>
-                                {{ auth()->user()->name }}
-                            @endif
+                            <i class="bi bi-person-circle fs-5 me-1 text-primary"></i>
+                            {{ auth()->user()->name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
-                            @if(auth()->user()->role->value === 'company')
-                                <li>
-                                    <a class="dropdown-item py-2" href="{{ route('company.dashboard') }}">
-                                        Dashboard Perusahaan
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item py-2" href="{{ route('company.profile') }}">
-                                        Kelola Profil Perusahaan
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                            @elseif(auth()->user()->role->value === 'student')
+                            @if(auth()->user()->role->value === 'student')
                                 <li>
                                     <a class="dropdown-item py-2" href="{{ route('student.profile') }}">
                                         Kelola Profil Mahasiswa
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                            @elseif(auth()->user()->role->value === 'admin')
-                                <li>
-                                    <a class="dropdown-item py-2" href="{{ route('admin.dashboard') }}">
-                                        Panel Admin
                                     </a>
                                 </li>
                                 <li>

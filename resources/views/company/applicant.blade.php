@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
+@section('title', 'Daftar Pelamar')
 @section('content')
     <div class="container py-4">
         <div class="d-flex align-items-center mb-4">
